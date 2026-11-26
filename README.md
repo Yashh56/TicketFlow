@@ -12,9 +12,10 @@
 4. [Database Design](#database-design)
 5. [Event-Driven Workflow & Action Management](#event-driven-workflow--action-management)
 6. [API Documentation](#api-documentation)
-7. [Getting Started & Installation](#getting-started--installation)
-8. [Automated Testing](#automated-testing)
-9. [Project Structure](#project-structure)
+7. [Sample Test Data](#sample-test-data)
+8. [Getting Started & Installation](#getting-started--installation)
+9. [Automated Testing](#automated-testing)
+10. [Project Structure](#project-structure)
 
 ---
 
@@ -216,7 +217,14 @@ The system leverages a centralized `AppEventBus` (extending Node.js `EventEmitte
 
 ---
 
-## 7. Getting Started & Installation
+## 7. Sample Test Data
+
+A dedicated markdown document containing copy-pasteable payloads across users, tickets, comments, filters, negative test scenarios, and complete cURL workflows is provided in:
+- [SAMPLE_DATA.md](SAMPLE_DATA.md)
+
+---
+
+## 8. Getting Started & Installation
 
 ### Prerequisites
 - Node.js 20+ (tested on Node v24)
