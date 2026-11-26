@@ -8,6 +8,7 @@ import {
   TicketPriority,
   TicketCategory
 } from '../types/index.js';
+import { eventBus } from '../events/index.js';
 
 const getParamId = (param: string | string[] | undefined): string => {
   if (Array.isArray(param)) return param[0] || '';
@@ -44,6 +45,12 @@ export const createTicket = async (
     const populatedTicket = await Ticket.findById(ticket._id)
       .populate('createdBy', 'name email role')
       .lean();
+
+    // Emit TICKET_CREATED event
+    eventBus.emitTicketCreated({
+      ticket: populatedTicket,
+      performedBy: userId
+    });
 
     res.status(201).json({
       message: 'Ticket created successfully',
@@ -217,7 +224,6 @@ export const updateTicket = async (
       return;
     }
 
-    // Non-admin users cannot edit tickets that are already RESOLVED or CLOSED
     if (!isAdmin && (ticket.status === TicketStatus.RESOLVED || ticket.status === TicketStatus.CLOSED)) {
       res.status(400).json({
         error: `Cannot modify a ticket that is already ${ticket.status.toLowerCase()}`
@@ -226,13 +232,14 @@ export const updateTicket = async (
     }
 
     const { title, description, category, priority, status, assignedTo } = req.body;
+    const previousStatus = ticket.status;
+    const previousPriority = ticket.priority;
 
     if (title !== undefined) ticket.title = title;
     if (description !== undefined) ticket.description = description;
     if (category !== undefined) ticket.category = category;
     if (priority !== undefined) ticket.priority = priority;
 
-    // Only Admin can update status and assignedTo
     if (isAdmin) {
       if (status !== undefined) ticket.status = status;
       if (assignedTo !== undefined) {
@@ -246,6 +253,37 @@ export const updateTicket = async (
       .populate('createdBy', 'name email role')
       .populate('assignedTo', 'name email role')
       .lean();
+
+    // Trigger domain events
+    eventBus.emitTicketUpdated({
+      ticket: updatedTicket,
+      performedBy: user?.userId || ''
+    });
+
+    if (status && status !== previousStatus) {
+      eventBus.emitStatusChanged({
+        ticket: updatedTicket,
+        previousStatus,
+        newStatus: status,
+        performedBy: user?.userId || ''
+      });
+
+      if (status === TicketStatus.RESOLVED) {
+        eventBus.emitTicketResolved({
+          ticket: updatedTicket,
+          performedBy: user?.userId || ''
+        });
+      }
+    }
+
+    if (priority && priority !== previousPriority) {
+      eventBus.emitPriorityChanged({
+        ticket: updatedTicket,
+        previousPriority,
+        newPriority: priority,
+        performedBy: user?.userId || ''
+      });
+    }
 
     res.status(200).json({
       message: 'Ticket updated successfully',
@@ -280,6 +318,9 @@ export const adminUpdateTicketStatus = async (
       return;
     }
 
+    const previousStatus = ticket.status;
+    const previousPriority = ticket.priority;
+
     if (status !== undefined) ticket.status = status;
     if (priority !== undefined) ticket.priority = priority;
     if (assignedTo !== undefined) {
@@ -292,6 +333,32 @@ export const adminUpdateTicketStatus = async (
       .populate('createdBy', 'name email role')
       .populate('assignedTo', 'name email role')
       .lean();
+
+    // Trigger event handlers
+    if (status && status !== previousStatus) {
+      eventBus.emitStatusChanged({
+        ticket: updatedTicket,
+        previousStatus,
+        newStatus: status,
+        performedBy: req.user?.userId || ''
+      });
+
+      if (status === TicketStatus.RESOLVED) {
+        eventBus.emitTicketResolved({
+          ticket: updatedTicket,
+          performedBy: req.user?.userId || ''
+        });
+      }
+    }
+
+    if (priority && priority !== previousPriority) {
+      eventBus.emitPriorityChanged({
+        ticket: updatedTicket,
+        previousPriority,
+        newPriority: priority,
+        performedBy: req.user?.userId || ''
+      });
+    }
 
     res.status(200).json({
       message: 'Ticket status and priority updated successfully',
@@ -344,6 +411,12 @@ export const deleteTicket = async (
     }
 
     await Ticket.findByIdAndDelete(id);
+
+    // Emit TICKET_DELETED event
+    eventBus.emitTicketDeleted({
+      ticketId: id,
+      performedBy: user?.userId || ''
+    });
 
     res.status(200).json({
       message: 'Ticket deleted successfully',
