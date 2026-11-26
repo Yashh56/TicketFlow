@@ -1,8 +1,8 @@
 {
   "info": {
-    "_postman_id": "ticket-mgmt-sys-api-v1",
-    "name": "Support Ticket Management System API",
-    "description": "Postman Collection for Support Ticket Management System built with Express.js, TypeScript, and MongoDB.",
+    "_postman_id": "ticketflow-api-v1",
+    "name": "TicketFlow API",
+    "description": "Postman Collection for TicketFlow Support Ticket Management System built with Express.js, TypeScript, and MongoDB.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [

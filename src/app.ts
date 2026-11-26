@@ -19,7 +19,7 @@ app.get('/api/health', (_req: Request, res: Response) => {
   res.status(200).json({
     status: 'ok',
     timestamp: new Date().toISOString(),
-    service: 'support-ticket-management-system'
+    service: 'TicketFlow'
   });
 });
 

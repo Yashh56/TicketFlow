@@ -1,6 +1,6 @@
-# Support Ticket Management System
+# TicketFlow - Support Ticket Management System
 
-A production-grade Mini Helpdesk and Ticket Management System developed with **Node.js**, **Express.js**, **TypeScript**, and **MongoDB**, featuring JWT role-based access control, event-driven action management, audit trails, and an administrator analytics dashboard.
+**TicketFlow** is a production-grade Mini Helpdesk and Ticket Management System developed with **Node.js**, **Express.js**, **TypeScript**, and **MongoDB**, featuring JWT role-based access control, event-driven action management, audit trails, and an administrator analytics dashboard.
 
 ---
 
@@ -225,8 +225,8 @@ The system leverages a centralized `AppEventBus` (extending Node.js `EventEmitte
 ### Setup Steps
 1. Clone the repository and enter the directory:
    ```bash
-   git clone <repo-url>
-   cd ticket-management-sys
+   git clone https://github.com/Yashh56/TicketFlow.git
+   cd TicketFlow
    ```
 
 2. Install dependencies:
@@ -281,7 +281,7 @@ npm test
 ## 9. Project Structure
 
 ```
-ticket-management-sys/
+TicketFlow/
 ├── src/
 │   ├── config/
 │   │   └── database.ts              # Database connection manager with in-memory fallback

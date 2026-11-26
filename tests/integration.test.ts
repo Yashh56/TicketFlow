@@ -3,7 +3,7 @@ import request from 'supertest';
 import app from '../src/app.js';
 import { connectDB, disconnectDB } from '../src/config/database.js';
 
-describe('Support Ticket Management System - End-to-End Test Suite', () => {
+describe('TicketFlow - End-to-End Test Suite', () => {
   let userToken: string;
   let userId: string;
   let user2Token: string;
@@ -26,7 +26,7 @@ describe('Support Ticket Management System - End-to-End Test Suite', () => {
       const res = await request(app).get('/api/health');
       expect(res.status).toBe(200);
       expect(res.body.status).toBe('ok');
-      expect(res.body.service).toBe('support-ticket-management-system');
+      expect(res.body.service).toBe('TicketFlow');
     });
   });
 

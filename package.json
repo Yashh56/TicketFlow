@@ -1,7 +1,7 @@
 {
-  "name": "ticket-management-sys",
+  "name": "ticketflow",
   "version": "1.0.0",
-  "description": "Support Ticket Management System built with Express.js and TypeScript",
+  "description": "TicketFlow - Support Ticket Management System built with Express.js and TypeScript",
   "main": "dist/index.js",
   "type": "module",
   "scripts": {

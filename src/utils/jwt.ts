@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { AuthPayload, UserRole } from '../types/index.js';
 
-const JWT_SECRET: string = process.env.JWT_SECRET || 'ticket-management-secret-key-fallback';
+const JWT_SECRET: string = process.env.JWT_SECRET || 'ticketflow-secret-key-fallback';
 const JWT_EXPIRES_IN = (process.env.JWT_EXPIRES_IN || '7d') as any;
 
 /**
