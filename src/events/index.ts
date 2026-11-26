@@ -13,4 +13,10 @@ export const initEventBus = (): void => {
 };
 
 export { eventBus };
-export * from './eventBus.js';
+export type {
+  TicketEventData,
+  StatusChangeEventData,
+  PriorityChangeEventData,
+  CommentEventData,
+  DeleteEventData
+} from './eventBus.js';
