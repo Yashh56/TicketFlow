@@ -1,5 +1,6 @@
 import express, { Application, Request, Response, NextFunction } from 'express';
 import cors from 'cors';
+import authRoutes from './routes/auth.routes.js';
 
 const app: Application = express();
 
@@ -13,6 +14,8 @@ app.get('/api/health', (_req: Request, res: Response) => {
     service: 'support-ticket-management-system'
   });
 });
+
+app.use('/api/auth', authRoutes);
 
 app.use((_req: Request, res: Response) => {
   res.status(404).json({ error: 'Route not found' });
