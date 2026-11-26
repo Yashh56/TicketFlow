@@ -54,11 +54,6 @@ const TicketSchema = new Schema<ITicketDocument>(
   }
 );
 
-TicketSchema.index({ status: 1 });
-TicketSchema.index({ priority: 1 });
-TicketSchema.index({ category: 1 });
-TicketSchema.index({ createdBy: 1 });
-
 export const Ticket: Model<ITicketDocument> =
   (mongoose.models.Ticket as Model<ITicketDocument>) ||
   mongoose.model<ITicketDocument>('Ticket', TicketSchema);
